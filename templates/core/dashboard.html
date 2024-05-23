@@ -1,0 +1,103 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<script src="https://unpkg.com/phosphor-icons"></script>
+	<link rel="stylesheet" href="{% static 'style1.css' %}">
+	<title>Vertical Tabs</title>
+</head>
+<body>
+
+	<div class="container">
+		<div class="wrapper">
+			<ul class="indicator">
+				<li class="active" data-target="#home"><i class="ph-house"></i>Dshboard</li>
+				<li data-target="#profile"><i class="ph-user-circle"></i>Orders</li>
+				<li data-target="#contact"><i class="ph-phone"></i>Track your order</li>
+				<li data-target="#settings"><i class="ph-gear-six"></i>My Address</li>
+				<li><a href="{% url 'userauths:sign-out' %}"> <i class="ph-gear-six"></i>Logout</a></li>
+			</ul>
+			<ul class="content">
+				<li class="active" id="home">
+					<h1>Hello {{request.user|title}}</h1>
+					<p>From your account dashboard. you can easily check & your <a href="#">recent orders</a>,<br/> manage your <a href="#">shipping and billing address</a>and <a href="#">edit your password and account details.</a></p>
+				</li>
+				<li id="profile">
+					<h1>Your Orders</h1>
+					<table border="1">
+            <tr>
+              <th>Order</th>
+              <th>Date</th>
+              <th>Status</th>
+              <th>Paid Status</th>
+              <th>Total</th>
+              <th>Action</th>
+            </tr>
+            {% for o in orders %}
+            <tr>
+              <td>{{o.id}}</td>
+              <td>{{o.order_date}}</td>
+              <td>{{o.product_status|title}}</td>
+              {% if o.paid_status == True %}
+              <td class="text-success"><strong>✔</strong></td>
+              {% else %}
+              <td class="text-danger"><strong>X</strong></td>
+              {% endif %}
+              <td>{{o.price}}</td>
+              <td><a href="{% url 'core:order-detail' o.id %}">View</a></td>
+            </tr>
+            {% endfor %}
+          </table>
+				</li>
+				<li id="contact">
+					<h1>Contact</h1>
+          <h4>Track your order</h4>
+				</li>
+				<li id="settings">
+          <h3>Add Address</h3>
+          <form action="#" method="POST">{% csrf_token %}
+            <div class="row">
+              <div class="col-md-6 mb-4">
+                  <label for="address">Address</label>
+                  <input type="text" name="address" class="form-control" id="address" value="" required>
+              </div>
+              <div class="col-md-6 mb-4">
+                  <label for="Mobile">Mobile</label>
+                  <input type="text" name="mobile" class="form-control" id="mobile" value="" required>
+              </div>
+              <div>
+                <button type="submit" name="submit" value="submit">Save Address</button>
+              </div>
+            </div>
+          </form>
+          <hr>
+          <br/>
+          {% for a in address %}
+          <h1>Address {{forloop.counter}}</h1>
+          <div>
+            <address>
+              <p>{{a.address}}</p>
+              <p>{{a.mobile}}</p>
+              <!-- <p>{{a.status}}</p> -->
+            </address>	
+            {% if a.status %}
+            <h2 data-address-id="{{ a.id }}" class="check {{a.id}}">✔</h2>
+            <button data-address-id="{{ a.id }}" class="make-default-address button{{a.id}} action_btn" style="display:none;">Make Default</button>
+            {% else %}
+            <h2 data-address-id="{{ a.id }}">✔</h2>
+            <button data-address-id="{{ a.id }}" class="make-default-address button{{a.id}} action_btn">Make Default</button>
+            {% endif %}
+          </div>
+          {% endfor %}				
+				</li>
+			</ul>
+		</div>
+	</div>
+	<script src="{% static 'js/js1.js' %}"></script>
+  <script src="{% static 'js/jquery/jquery-2.2.4.min.js' %}"></script>
+  <script src="{% static 'js/function.js' %}"></script>
+  <script src="{% static 'js/plugins/plugins.js' %}"></script>
+</body>
+</html>

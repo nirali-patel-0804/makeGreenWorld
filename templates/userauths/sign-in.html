@@ -1,0 +1,60 @@
+{% extends 'partials/base.html' %}
+{% load static %}
+{% block content %}
+
+<div class="breadcrumb-area">
+    <!-- Top Breadcrumb Area -->
+    <div class="top-breadcrumb-area bg-img bg-overlay d-flex align-items-center justify-content-center" style="background-image: url({% static 'img/bg-img/24.jpg' %});">
+        <h2>Sign In</h2>
+    </div>
+
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="{% url 'core:index' %}"><i class="fa fa-home"></i> Home</a></li>
+                        <li class="breadcrumb-item active" aria-current="page">Sign In  </li>
+                    </ol>
+                </nav>
+            </div>
+        </div>
+    </div>
+</div>
+<section class="contact-area">
+    <div class="container">
+        <div class="row align-items-center justify-content-between">
+            <div class="col-12 col-lg-5" style="-ms-flex: 0 0 41.666667%;flex: 0 0 70.666667%;max-width: 70.666667%;padding-left: 370px;">
+                <!-- Section Heading -->
+                <div class="section-heading">
+                    <h2>Sign In</h2>
+                    <p class="mb-30">Don't have an account?<a href="{% url 'userauths:sign-up' %}">Create here</a></p>
+                </div>
+                <!-- Contact Form Area -->
+                <div class="contact-form-area mb-100">
+                    <form method="POST">
+                        <div class="row">
+                            {% csrf_token %}
+                            <div class="col-12">
+                                <div class="form-group">
+                                    <input type="email" required class="form-control" name="contact-email" placeholder="Email address">
+                                </div>
+                            </div>
+                            <div class="col-12">
+                                <div class="form-group">
+                                    <input required type="password" class="form-control" name="contact-subject" placeholder="Password">
+                                </div>
+                            </div>
+                            <div class="col-12">
+                                <button type="submit" class="btn alazea-btn mt-15">Login</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+{% endblock content %} 

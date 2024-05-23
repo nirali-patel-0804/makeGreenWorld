@@ -1,0 +1,155 @@
+
+<!DOCTYPE html>
+<html lang="en">
+    
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Invoice</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .invoice {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            background-color: #f9f9f9;
+        }
+
+        .invoice-header,
+        .invoice-body,
+        .invoice-footer {
+            margin-bottom: 20px;
+            padding: 20px;
+            background-color: #fff;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+
+        .invoice-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .invoice-body {
+            overflow-x: auto;
+        }
+
+        .invoice-footer {
+            text-align: right;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th,
+        td {
+            padding: 8px;
+            border-bottom: 1px solid #ddd;
+            text-align: left;
+        }
+
+        th {
+            background-color: #f2f2f2;
+        }
+
+        .total {
+            font-weight: bold;
+        }
+
+        .logo {
+            max-width: 100px;
+            margin-right: auto;
+        }
+
+        .id-number {
+            margin-top: 10px;
+        }
+    </style>
+</head>
+
+<body>    
+    <div class="invoice">
+        <div class="invoice-header">
+            <img src="img/core-img/logo8.png" alt="Company Logo" class="logo">
+            <div>
+                <h1>Invoice</h1>
+                <p class="id-number">ID: 123456</p>
+            </div>
+        </div>
+        <div class="invoice-body">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Item</th>
+                        <th>Price</th>
+                        <th>Quantity</th>
+                        <th>Total</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for product_id, item in cart_data.items %}
+                    <tr>
+                        <td>{{item.title}}</td>
+                        <td>{{item.price}}</td>
+                        <td>{{item.qty}}</td>
+                        <td>{% widthratio item.price 1 item.qty %}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        <div class="invoice-footer">
+            <p>Subtotal: {{cart_total_amount}}</p>
+            <!-- <p>Tax: $5.25</p> -->
+            <p class="total">Grand Total: {{cart_total_amount}}</p>
+        </div>
+        <div class="invoice-bottom pb-80">
+            <div class="row">
+                <div class="col-md-6">
+                    <h3 class="mb-15">Invoice Info</h3>
+                    <p class="font-sm">
+                        <strong>Invoice To:</strong> {{request.user|title}}<br/>
+                    </p>
+                </div>
+                
+            </div>
+        </div>
+        <div class="invoice-footer text-center">
+            <p class="text-muted"><strong>Heyy {{request.user|title}}</strong>Thanks For Shoping</p>
+        </div>
+        <div class="buttons">
+            <button onclick="window.print()">Print</button>
+            <button id="downloadButton">Download</button>
+        </div>
+    </div>
+    
+
+<script>
+  const downloadButton = document.getElementById('downloadButton');
+  downloadButton.addEventListener('click', () => {
+    // Assuming invoiceUrl is the URL of your invoice file
+    const invoiceUrl = 'http://127.0.0.1:8000/payment-completed/';
+    const a = document.createElement('a');
+    a.href = invoiceUrl;
+    a.download = 'payment-sucessfull';
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+  });
+</script>
+
+    
+</body>
+
+</html>

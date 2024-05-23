@@ -1,0 +1,62 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<script src="https://unpkg.com/phosphor-icons"></script>
+	<link rel="stylesheet" href="{% static 'style1.css' %}">
+	<title>Vertical Tabs</title>
+</head>
+<body>
+
+	<div class="container">
+		<div class="wrapper">
+			<ul class="indicator">
+				<li data-target="#home"><a href="{% url 'core:dashboard' %}"><i class="ph-house"></i>Dshboard</a></li>
+				<li class="active" data-target="#profile"><i class="ph-user-circle"></i>Orders</li>
+				<li><a href="{% url 'userauths:sign-out' %}"> <i class="ph-gear-six"></i>Logout</a></li>
+			</ul>
+			<ul class="content">
+				<li id="home">
+					<h1>Hello {{request.user|title}}</h1>
+					<p>From your account dashboard. you can easily check & your <a href="#">recent orders</a>,<br/> manage your <a href="#">shipping and billing address</a>and <a href="#">edit your password and account details.</a></p>
+				</li>
+				<li class="active" id="profile">
+					<h1>Your Orders</h1>
+					<table border="1">
+            <tr>
+              <th>Order</th>
+              <th>Image</th>
+              <th>Title</th>
+              <th>Price</th>
+              <th>Qty</th>
+              <th>Total</th>
+            </tr>
+            {% for o in order_items %}
+            <tr>
+              <td>{{o.id}}</td>
+              <td>
+                <p><img src="{{ o.image }}" style="width: 40px; height: 40px; object-fit: cover;" alt=""></p>
+              </td>
+              <td>{{o.item}}</td>
+              <td>{{o.price}}</td>
+              <td>{{o.qty}}</td>
+              <td>{{o.total}}</td>
+            </tr>
+            {% endfor %}
+          </table>
+				</li>
+				<li id="contact">
+					<h1>Contact</h1>
+					<p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Error molestias quasi est expedita, a pariatur deleniti cum reiciendis similique cupiditate?</p>
+					<p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Dolorum explicabo magni facere quo voluptas error, nulla nihil maxime fugiat earum iure fugit quas eligendi harum accusantium esse libero totam eveniet reprehenderit dignissimos ex, eius, voluptate! A maxime ad nostrum voluptatem, placeat, assumenda fugiat? Accusamus fuga repellendus nisi qui.</p>
+					<p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Consequuntur optio in pariatur ab officiis aperiam harum veritatis adipisci eveniet fuga soluta voluptas minima a necessitatibus, blanditiis.</p>
+				</li>
+			
+			</ul>
+		</div>
+	</div>
+	<script src="{% static 'js/js1.js' %}"></script>
+</body>
+</html>

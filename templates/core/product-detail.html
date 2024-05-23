@@ -1,0 +1,279 @@
+{% extends 'partials/base.html' %}
+{% load static %}
+{% block content %}
+
+<!-- ##### Breadcrumb Area Start ##### -->
+<div class="breadcrumb-area">
+    <!-- Top Breadcrumb Area -->
+    <div class="top-breadcrumb-area bg-img bg-overlay d-flex align-items-center justify-content-center"
+        style="background-image: url({% static 'img/bg-img/24.jpg' %});">
+        <h2>SHOP DETAILS</h2>
+    </div>
+
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="{% url 'core:index' %}"><i class="fa fa-home"></i> Home</a>
+                        </li>
+                        <li class="breadcrumb-item"><a href="{% url 'core:product' %}">Shop</a></li>
+                        <li class="breadcrumb-item active" aria-current="page">Shop Details</li>
+                    </ol>
+                </nav>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- ##### Breadcrumb Area End ##### -->
+
+<!-- ##### Single Product Details Area Start ##### -->
+<section class="single_product_details_area mb-50">
+    <div class="produts-details--content mb-50">
+        <div class="container">
+            <div class="row justify-content-between">
+
+                <div class="col-12 col-md-6 col-lg-5">
+                    <div class="single_product_thumb">
+                        <div id="product_details_slider" class="carousel slide" data-ride="carousel">
+                            <div class="carousel-inner">
+
+
+                                <div class="carousel-item active">
+                                    <a class="product-img" href="{{product.image.url}}" title="Product Image"></a>
+                                    <img class="d-block w-100" src="{{product.image.url}}" alt="1">
+                                    </a>
+                                </div>
+                                {% for p in p_image %}
+                                <div class="carousel-item">
+                                    <a class="product-img" href="{{p.images.url}}" title="Product Image">
+                                        <img class="d-block w-100" src="{{p.images.url}}" alt="1">
+                                    </a>
+                                </div>
+
+                                {% endfor %}
+                            </div>
+                            <ol class="carousel-indicators">
+                                <li class="active" data-target="#product_details_slider" data-slide-to="0"
+                                    style="background-image: url({{product.image.url}});">
+                                </li>
+                                {% for p in p_image %}
+                                <li data-target="#product_details_slider" data-slide-to="1"
+                                    style="background-image: url({{p.images.url}});">
+                                </li>
+                                {% endfor %}
+
+                            </ol>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-12 col-md-6">
+                    <div class="single_product_desc">
+                        <h6 class="title">-{{product.get_percentage|floatformat:0}}%</h6>
+                        <h1 class="title">{{product.title}}</h1>
+                        <span>₹</span><h4 class="current-product-price-{{p.id}}">{{product.price|floatformat:2}}</h4>
+                        <div class="short_overview">
+                            {{product.description|truncatechars:100}}
+                        </div>
+
+                        <div class="cart--area d-flex flex-wrap align-items-center">
+                            <!-- Add to Cart Form -->
+                              
+                                <div class="quantity">
+                                    <input type="number" value="" id="product-quantity" class="qty-text product-quantity-{{ p.id }}">
+                                    
+                                </div>                                
+                                <input type="hidden" value="{{p.pid}}" class="product-pid-{{p.id}}">
+                                <input type="hidden" value="{{product.image.url}}" class="product-image-{{p.id}}">
+                                <input type="hidden" value="{{p.id}}" class="product-id-{{p.id}}">
+                                <input type="hidden" value="{{product.title}}" class="product-title-{{p.id}}">
+                                <button type="submit" data-index="{{p.id}}" name="addtocart" value="5"  class="add-to-cart-btn btn alazea-btn ml-15">Add to
+                                    cart</button>
+                            
+                            <!-- Wishlist & Compare -->
+                            <div class="wishlist-compare d-flex flex-wrap align-items-center">
+                                <a href="#" class="wishlist-btn ml-15"><i class="icon_heart_alt"></i></a>
+                                <a href="#" class="compare-btn ml-15"><i class="arrow_left-right_alt"></i></a>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-12 col-md-6">
+                                <div>
+                                    <p><span>SKU:</span> <span>{{product.sku}}</span></p>
+                                    <p><span>Category:</span> <span>{{product.subcategory}}</span></p>
+                                    <p><span>Tags:</span> <span>{{product.tags}} </span></p>
+                                </div>
+                            </div>
+                            <div class="col-12 col-md-6">
+                                <div>
+                                    <p><span>Specification:</span> <span>{{product.specification}}</span></p>
+                                    <p><span>Stock Count:</span> <span>{{product.stock_count}}</span></p>
+                                    <p><span>Time of implantation:</span> <strong><span
+                                                class="text-danger">{{product.life}}</span></strong></p>
+                                </div>
+
+
+
+                            </div>
+                        </div>
+
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <div class="product_details_tab clearfix">
+                    <!-- Tabs -->
+                    <ul class="nav nav-tabs" role="tablist" id="product-details-tab">
+
+                        <li class="nav-item">
+                            <a href="#reviews" class="nav-link" data-toggle="tab" role="tab">Reviews <span
+                                    class="text-muted">({{review.count}})</span></a>
+                        </li>
+                    </ul>
+                    <!-- Tab Content -->
+                    <div class="tab-content">
+
+                        <div class="reviews_area">
+                            <ul>
+                                <li>
+                                    {% for r in review %}
+                                    <div class="single_user_review mb-15">
+                                        <div class="review-rating">
+                                           {{r.rating}}
+                                            
+                                        </div>
+                                        <div class="review-details">
+                                            <p>by <a href="#">{{r.user.username|title}}</a> on <span>{{r.date|date:"d M,Y"}}</span><br><span>{{r.review}}</span></p>
+                                            
+                                        </div>
+                                    </div>
+                                    {% endfor %}
+                                </li>
+                            </ul>
+                        </div>
+
+                        <!-- <div role="tabpanel" class="tab-pane fade" id="reviews"> -->
+                            <div class="submit_a_review_area mt-50">
+                                <h4 class="submit-review">Submit A Review</h4>
+                                <strong class="text-success" id="review-res"></strong>
+                                <form class="hide-comment-form" action="{% url 'core:ajax-add-review' product.id %}" method="POST" id="commentForm">
+                                   {% csrf_token %}
+                                    <div class="row">
+                                        <div class="col-12">
+                                            <div class="form-group d-flex align-items-center">
+                                                <span class="mr-15">Your Ratings:</span>
+                                                <div class="stars">
+                                                    <input type="radio" name="star" class="star-1" id="star-1">
+                                                    <label class="star-1" for="star-1">1</label>
+                                                    <input type="radio" name="star" class="star-2" id="star-2">
+                                                    <label class="star-2" for="star-2">2</label>
+                                                    <input type="radio" name="star" class="star-3" id="star-3">
+                                                    <label class="star-3" for="star-3">3</label>
+                                                    <input type="radio" name="star" class="star-4" id="star-4">
+                                                    <label class="star-4" for="star-4">4</label>
+                                                    <input type="radio" name="star" class="star-5" id="star-5">
+                                                    <label class="star-5" for="star-5">5</label>
+                                                    <span></span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-12">
+                                            <div class="form-group">
+                                                {{review_form.review}}
+                                            </div>
+                                        </div>
+                                        <div class="col-12">
+                                            <div class="form-group">
+                                                {{review_form.rating}}
+                                            </div>
+                                        </div>
+                                        
+                            
+                                        <div class="col-12">
+                                            <button type="submit" class="btn alazea-btn">Submit Your Review</button>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+
+
+
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- ##### Single Product Details Area End ##### -->
+
+<!-- ##### Related Product Area Start ##### -->
+<div class="related-products-area">
+    {% if products %}
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <!-- Section Heading -->
+                <div class="section-heading text-center">
+                    <h2>Related Products</h2>
+                </div>
+            </div>
+        </div>
+        {% endif %}
+        <div class="row">
+
+            <!-- Single Product Area -->
+            {% for p in products %}
+            <div class="col-12 col-sm-6 col-lg-3">
+                <div class="single-product-area mb-100">
+                    <!-- Product Image -->
+                    <div class="product-img">
+                        <a href="{% url 'core:product-detail' p.pid %}"><img src="{{p.image.url}}" alt=""></a>
+                        <!-- Product Tag -->
+                        <div class="product-tag">
+                            <a href="#">Hot</a>
+                        </div>
+                        <div class="product-meta d-flex">
+                            <a href="#" class="wishlist-btn"><i class="icon_heart_alt"></i></a>
+                            <a href="{% url 'core:product-detail' p.pid %}" class="add-to-cart-btn">Add to cart</a>
+                            <a href="#" class="compare-btn"><i class="arrow_left-right_alt"></i></a>
+                        </div>
+                    </div>
+                    <!-- Product Info -->
+                    <div class="product-info mt-15 text-center">
+                        <a href="{% url 'core:product-detail' p.pid %}">
+                            <p>{{p.title}}</p>
+                        </a>
+                        <span>₹</span><h6 id="current-product-price-{{p.id}}">{{p.price}}</h6>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+<!-- ##### Related Product Area End ##### -->
+
+
+
+<!-- ##### All Javascript Files ##### -->
+<!-- jQuery-2.2.4 js -->
+<script src="{% static 'js/jquery/jquery-2.2.4.min.js' %}"></script>
+<!-- Popper js -->
+<script src="{% static 'js/bootstrap/popper.min.js' %}"></script>
+<!-- Bootstrap js -->
+<script src="{% static 'js/bootstrap/bootstrap.min.js' %}"></script>
+<!-- All Plugins js -->
+<script src="{% static 'js/plugins/plugins.js' %}"></script>
+<!-- Active js -->
+<script src="{% static 'js/active.js' %}"></script>
+
+{% endblock content %}

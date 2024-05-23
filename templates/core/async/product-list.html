@@ -1,0 +1,21 @@
+{% for p in products %}
+<div class="col-12 col-sm-6 col-lg-3">
+    <div class="single-product-area mb-50 wow fadeInUp" data-wow-delay="100ms">
+        <!-- Product Image -->
+        <div class="product-img">
+            <a href="{% url 'core:product-detail' p.pid %}"><img src="{{ p.image.url }}" alt=""></a>
+            <!-- Product Tag -->
+            <div class="product-tag sale-tag">
+                <a href="#">-{{p.get_percentage|floatformat:0}}%</a>
+            </div>
+        </div>
+        <!-- Product Info -->
+        <div class="product-info mt-15 text-center">
+            <a href="{% url 'core:product-detail' p.pid %}">
+                <p>{{p.title}}</p>
+            </a>
+            <h6>{{p.price}}</h6>
+        </div>
+    </div>
+</div>
+{% endfor %}
